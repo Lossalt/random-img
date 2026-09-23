@@ -1,8 +1,6 @@
 <?php
-//随机数生成
-$num = rand(1,197);
-//图片地址拼接
-$picpath = "https://raw.githubusercontent.com/Lossalt/ramdom-img/main/pc/".$num.".webp";
-//重定位到图片
-die(header("Location: $picpath"));
-?>
+declare(strict_types=1);
+
+require __DIR__ . '/random-image.php';
+
+rid_handle_endpoint('pc');
