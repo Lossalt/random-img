@@ -23,11 +23,11 @@ foreach (RID_DEVICES as $key => $cfg) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ramdom-img · 随机图 API</title>
+  <title>random-img · 随机图 API</title>
   <style>
     :root { color-scheme: light dark; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
     body { margin: 0; padding: 2rem 1.25rem 3rem; line-height: 1.6; }
-    main { max-width: 42rem; margin: 0 auto; }
+    main { max-width: 44rem; margin: 0 auto; }
     h1 { font-size: 1.5rem; margin-bottom: 0.25rem; }
     p.lead { opacity: 0.8; margin-top: 0; }
     code, pre { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: 0.92em; }
@@ -45,8 +45,8 @@ foreach (RID_DEVICES as $key => $cfg) {
 </head>
 <body>
 <main>
-  <h1>ramdom-img</h1>
-  <p class="lead">随机壁纸跳转接口 · Random wallpaper redirect API</p>
+  <h1>random-img</h1>
+  <p class="lead">随机壁纸接口 · Random wallpaper API</p>
 
   <table>
     <thead>
@@ -55,7 +55,7 @@ foreach (RID_DEVICES as $key => $cfg) {
     <tbody>
       <?php foreach ($devices as $d): ?>
       <tr>
-        <td><a href="/pc.php">/<?= htmlspecialchars($d['key']) ?>.php</a></td>
+        <td><a href="/<?= htmlspecialchars($d['key']) ?>.php">/<?= htmlspecialchars($d['key']) ?>.php</a></td>
         <td><?= htmlspecialchars($d['label']) ?>（本地 <?= (int) $d['local_count'] ?> 张<?= $d['mode'] === 'github-raw' ? '，回退池 ' . (int) $d['fallback_count'] : '' ?>）</td>
         <td>
           <?php if ($d['mode'] === 'local'): ?>
@@ -70,30 +70,34 @@ foreach (RID_DEVICES as $key => $cfg) {
   </table>
 
   <h2>用法 / Usage</h2>
-  <p>浏览器打开即 302 跳到随机图：</p>
-  <pre>https://你的域名/pc.php
-https://你的域名/mobile.php</pre>
+  <pre>GET /pc.php          → 302 跳到随机 PC 图
+GET /mobile.php      → 302 跳到随机手机图
+GET /pc.php?serve    → 直接返回图片字节（本地模式）
+GET /pc.php?json     → JSON 元数据
+GET /api.php         → 设备列表 JSON
+GET /pc.php          Accept: application/json → 同上 JSON</pre>
 
-  <p>需要 JSON（给程序用）加 <code>?json</code>：</p>
-  <pre>https://你的域名/pc.php?json</pre>
   <pre>{
   "url": "pc/12.webp",
   "source": "local",
   "device": "pc",
-  "total": 197
+  "total": 197,
+  "file": "12.webp"
 }</pre>
 
   <h2>试一下 / Try</h2>
   <p>
     <a class="button" href="/pc.php" target="_blank" rel="noopener">随机 PC 图</a>
     <a class="button" href="/mobile.php" target="_blank" rel="noopener">随机手机图</a>
+    <a class="button" href="/pc.php?serve" target="_blank" rel="noopener">PC 直出</a>
+    <a class="button" href="/mobile.php?serve" target="_blank" rel="noopener">手机直出</a>
     <a class="button" href="/pc.php?json" target="_blank" rel="noopener">PC JSON</a>
-    <a class="button" href="/mobile.php?json" target="_blank" rel="noopener">手机 JSON</a>
+    <a class="button" href="/api.php" target="_blank" rel="noopener">设备列表</a>
   </p>
 
   <h2>部署 / Deploy</h2>
-  <p><strong>推荐（整仓部署）</strong>：把整个仓库放到 PHP 空间，脚本会自动扫描 <code>pc/</code>、<code>mobile/</code> 下的图片，同域直出。</p>
-  <p><strong>轻量（只放 PHP）</strong>：把 <code>pc.php</code>、<code>mobile.php</code>、<code>random-image.php</code> 放到服务器；没有本地图片目录时会跳转到 GitHub raw。</p>
+  <p><strong>推荐（整仓部署）</strong>：把整个仓库放到 PHP 空间，自动扫描 <code>pc/</code>、<code>mobile/</code>，同域直出。</p>
+  <p><strong>轻量（只放 PHP）</strong>：把 <code>pc.php</code>、<code>mobile.php</code>、<code>random-image.php</code>、<code>api.php</code> 放到服务器；没有本地图片目录时会跳转到 GitHub raw。</p>
 </main>
 </body>
 </html>

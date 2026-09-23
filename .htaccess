@@ -1,0 +1,7 @@
+# Optional Apache helper for shared hosting.
+# Enable rewrite only if you want clean paths like /pc → pc.php
+# DirectoryIndex index.php
+
+<IfModule mod_headers.c>
+  Header set Cache-Control "no-store" "expr=%{REQUEST_STATUS} == 302"
+</IfModule>
